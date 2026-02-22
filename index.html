@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Günü Gerisayım</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0f2027;
+            background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        h1 { font-size: 2rem; margin-bottom: 30px; letter-spacing: 2px; }
+        .timer-wrapper { display: flex; gap: 15px; justify-content: center; }
+        .box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 90px;
+            transition: transform 0.3s;
+        }
+        .box:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.3); }
+        .num { font-size: 2.5rem; font-weight: bold; display: block; }
+        .txt { font-size: 0.9rem; color: #ddd; text-transform: uppercase; }
+        #congrats { font-size: 3rem; font-weight: bold; color: #ffd700; display: none; text-shadow: 0 0 20px #ffd700; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="countdown-ui">
+        <h1>Elməddin müəllimin ad gününə qalan vaxt:</h1>
+        <div class="timer-wrapper">
+            <div class="box"><span class="num" id="days">00</span><span class="txt">Gün</span></div>
+            <div class="box"><span class="num" id="hours">00</span><span class="txt">Saat</span></div>
+            <div class="box"><span class="num" id="mins">00</span><span class="txt">Dəqiqə</span></div>
+            <div class="box"><span class="num" id="secs">00</span><span class="txt">Saniyə</span></div>
+        </div>
+    </div>
+    <div id="congrats">Ad günün mübarək Elməddin müəllim! 🎂🎉</div>
+</div>
+
+<script>
+    function updateTimer() {
+        const now = new Date();
+        let currentYear = now.getFullYear();
+        
+        // 10 Fevral hədəfi
+        let targetDate = new Date(`February 10, ${currentYear} 00:00:00`);
+
+        // Əgər bu ilin 10 fevralı artıq keçibsə, hədəfi gələn ilə keçir
+        if (now > targetDate) {
+            targetDate = new Date(`February 10, ${currentYear + 1} 00:00:00`);
+        }
+
+        const diff = targetDate - now;
+
+        // Əgər tam olaraq həmin gündürsə (və ya vaxt bitibsə)
+        if (diff <= 0) {
+            document.getElementById('countdown-ui').style.display = 'none';
+            document.getElementById('congrats').style.display = 'block';
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+
+        document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+        document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+        document.getElementById('mins').innerText = m < 10 ? '0' + m : m;
+        document.getElementById('secs').innerText = s < 10 ? '0' + s : s;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
+
+</body>
+</html>
